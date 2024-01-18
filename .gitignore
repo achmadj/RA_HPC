@@ -9,7 +9,6 @@ __pycache__/
 
 # ignore all .log
 *.log
-*.out
 
 # ignore all .csv
 *.csv
@@ -32,3 +31,6 @@ lightning_logs/
 
 # ignore all tmp*
 tmp*
+
+# ignore all .out
+nohup.out
