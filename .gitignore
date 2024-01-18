@@ -1,0 +1,33 @@
+# ignore all h5 files
+*.h5
+
+# ignore all npy files
+*.npy
+
+# ignore all __pycache__ directories
+__pycache__/
+
+# ignore all .log
+*.log
+
+# ignore all .csv
+*.csv
+
+# ignore all png and svg
+*.png
+*.svg
+
+# ignore all .ipynb_checkpoints
+.ipynb_checkpoints/
+
+# ignore all .DS_Store
+.DS_Store
+
+# ignore all pt 
+*.pt
+
+# ignore all lightning logs
+lightning_logs/
+
+# ignore all tmp*
+tmp*
