@@ -9,6 +9,7 @@ __pycache__/
 
 # ignore all .log
 *.log
+*.out
 
 # ignore all .csv
 *.csv
