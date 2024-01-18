@@ -147,5 +147,5 @@ if __name__ == '__main__':
   plt.colorbar()
   plt.xlabel('True')
   plt.ylabel('Pred')
-  plt.savefig(f'plot_NOW.png')
+  plt.savefig(f'plot_{NOW}.png')
   plt.show()
