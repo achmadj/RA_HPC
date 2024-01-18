@@ -156,12 +156,12 @@ class Solver:
   def V_iw(self, mesh, param):
     (x,y,z) = mesh
     E, Lx, Ly, Lz, cx, cy, cz = param
-    upperX = 0.5*(2*cx + Lx)
-    lowerX = 0.5*(2*cx - Lx)
-    upperY = 0.5*(2*cy + Ly)
-    lowerY = 0.5*(2*cy - Ly)
-    upperZ = 0.5*(2*cz + Lz)
-    lowerZ = 0.5*(2*cz - Lz)
+    upperX = + Lx
+    lowerX = - Lx
+    upperY = + Ly
+    lowerY = - Ly
+    upperZ = + Lz
+    lowerZ = - Lz
 
     potential = np.zeros((self.L, self.L, self.L))
     for i in range(self.L):
@@ -186,7 +186,7 @@ class Solver:
     T = self.T(h)
     (param) = self.getRandom()
     param = np.array(param).T
-    energies = np.zeros((self.N, 1))
+    energies = np.zeros((self.N, 3))
     imgs = np.zeros((self.N, self.L, self.L, self.L))
 
     for idx in range(self.N):
@@ -199,10 +199,18 @@ class Solver:
       else:
         V, img = self.V_sho(mesh, param[idx]) if self.mode == 'sho' else self.V_dwig(mesh, param[idx])
         H = T + V
-        E = linalg.eigsh(H, k=1, which='SA', return_eigenvectors=False)
-        energies[idx] = np.real(E.get())
-        imgs[idx] = img
+        E, psi = linalg.eigsh(H, k=2, which='SA', return_eigenvectors=True)
+        E0 = E[0]
+        E1 = E[1]
+        wf = psi[:, 0]
+        kinetic = wf.dot(T.dot(wf.T))
+        energies[idx, 0] = np.real(E0.get())
+        energies[idx, 1] = np.real(E1.get())
+        energies[idx, 2] = np.real(kinetic.get())
 
+        imgs[idx] = img
+    # remove unused variable
+    del mesh, h, T, param, V, img, H, E, psi, E0, E1, wf, kinetic
     return energies, imgs
   
   def create_train_data(self, filename, num_augmentations=0.2):
@@ -211,7 +219,7 @@ class Solver:
       filename: name of the file to save the data 
       num_augmentations: number of augmentations per image. Default is range between 0 and 1. If int is given, it is the number of augmentations per image.
     return:
-      energies: energies of the images
+      energies: energies of the images after augmentation (e0, e1, kinetic)
       imgs: images
     """
     energies, imgs = self.solve()
