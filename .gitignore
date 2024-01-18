@@ -30,7 +30,7 @@ __pycache__/
 lightning_logs/
 
 # ignore all tmp*
-tmp*
+tmp*  
 
 # ignore all .out
-nohup.out
+*.out
