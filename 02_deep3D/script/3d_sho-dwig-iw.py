@@ -149,8 +149,8 @@ class Solver:
     return V, potential
   
   def RandomL(self):
-    Ly = 1 + np.random.rand() * 10
-    Lz = 1 + np.random.rand() * 10
+    Ly = 1 + np.random.rand() * 14
+    Lz = 1 + np.random.rand() * 14
     return Ly, Lz
 
   def V_iw(self, mesh, param):
@@ -188,7 +188,9 @@ class Solver:
     param = np.array(param).T
     energies = np.zeros((self.N, 3))
     imgs = np.zeros((self.N, self.L, self.L, self.L))
-
+    if self.mode=='iw':
+      energies = np.zeros((self.N, 3))
+      
     for idx in range(self.N):
       if self.mode=='iw':
         # print(idx, end='\r', flush=True)
@@ -209,8 +211,9 @@ class Solver:
         energies[idx, 2] = np.real(kinetic.get())
 
         imgs[idx] = img
+        del H, E, psi, E0, E1, wf, kinetic
     # remove unused variable
-    del mesh, h, T, param, V, img, H, E, psi, E0, E1, wf, kinetic
+    del mesh, h, T, param, V, img, 
     return energies, imgs
   
   def create_train_data(self, filename, num_augmentations=0.2):

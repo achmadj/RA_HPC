@@ -26,8 +26,8 @@ def random_split(X, y, train_split):
 def data_preparation(mode, filename, bs=128, N=20000, L=40):
     with h5py.File(filename, 'r') as hf:
       feature = hf['feature'][:]
-      target = hf['target'][:]
-
+      target = hf['target'][:, 0]
+    ic(feature.shape, target.shape)
     X = torch.tensor(feature.reshape(N, 1, L, L, L), dtype=torch.float32)
     y = torch.tensor(target.reshape(N, 1), dtype=torch.float32)
     del feature, target
@@ -144,14 +144,15 @@ def test(model, NOW, val_loader=None):
   y_pred = np.concatenate(y_pred)
 
   c = np.abs(y_pred - y_true)
+  ic(np.mean(c))
   plt.scatter(y_true, y_pred, s=10, c=c, cmap='viridis_r', rasterized=True)
   plt.colorbar()
   plt.xlabel('True')
   plt.ylabel('Pred')
   MIN = np.min([y_true, y_pred])
   MAX = np.max([y_true, y_pred])
-  plt.xlim(MIN, MAX)
-  plt.ylim(MIN, MAX)
+  # plt.xlim(MIN, MAX)
+  # plt.ylim(MIN, MAX)
   plt.savefig(f'/clusterfs/students/achmadjae/RA/02_deep3D/fig/plot_{NOW}.svg', bbox_inches='tight')
   plt.tight_layout()
   plt.show()
@@ -169,7 +170,7 @@ if __name__ == '__main__':
   if mode == "train":
     filename = f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{NOW}_train_40_15000.h5'
     train_set, train_loader, val_set, val_loader = data_preparation(mode, filename)
-    train(model, criterion, optimizer, scheduler, NOW, train_set, train_loader, val_set, val_loader, max_epoch=10)
+    train(model, criterion, optimizer, scheduler, NOW, train_set, train_loader, val_set, val_loader, max_epoch=1000)
   elif mode=="test":
     filename = f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{NOW}_test_40_5000.h5'
     test_set, test_loader = data_preparation(mode, filename, N=5000)
