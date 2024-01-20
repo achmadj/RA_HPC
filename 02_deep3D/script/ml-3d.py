@@ -16,7 +16,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # flat the X_train and X_test
 X_train = X_train.reshape(X_train.shape[0], -1)
 X_test = X_test.reshape(X_test.shape[0], -1)
-regr = RandomForestRegressor(n_estimators=200, max_depth=80, random_state=42, criterion='absolute_error', n_jobs=-1, max_features=0.6, min_samples_leaf=10)
+regr = RandomForestRegressor(n_estimators=500, max_depth=80, random_state=42, criterion='absolute_error', n_jobs=-1, max_features=0.6, min_samples_leaf=10)
 now = time.time()
 regr.fit(X_train, y_train)
 then = time.time()

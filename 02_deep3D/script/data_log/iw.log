@@ -1,0 +1,16 @@
+ic| mode: 'iw'
+Traceback (most recent call last):
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py", line 296, in <module>
+    S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py", line 228, in create_train_data
+    energies, imgs = self.solve()
+                     ^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py", line 197, in solve
+    V, img, E = self.V_iw(mesh, param[idx])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py", line 173, in V_iw
+    potential[i,j,k] = 20
+    ~~~~~~~~~^^^^^^^
+KeyboardInterrupt
+ic| mode: 'iw'
+ic| 'done'
