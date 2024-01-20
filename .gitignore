@@ -14,8 +14,8 @@ __pycache__/
 *.csv
 
 # ignore all png and svg
-*.png
-*.svg
+# *.png
+# *.svg
 
 # ignore all .ipynb_checkpoints
 .ipynb_checkpoints/
@@ -24,7 +24,7 @@ __pycache__/
 .DS_Store
 
 # ignore all pt 
-*.pt
+# *.pt
 
 # ignore all lightning logs
 lightning_logs/
@@ -34,3 +34,6 @@ tmp*
 
 # ignore all .out
 *.out
+
+# ignore gitignore
+.gitignore
