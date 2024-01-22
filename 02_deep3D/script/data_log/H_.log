@@ -1,0 +1,25 @@
+num: 1num: 2num: 3num: 4num: 5num: 6num: 7num: 8num: 9num: 10num: 11num: 12num: 13num: 14num: 15num: 16num: 17num: 18num: 19Traceback (most recent call last):
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_hydrogenlike.py", line 157, in <module>
+    S.generate_file()
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_hydrogenlike.py", line 114, in generate_file
+    E, psi = self.solve(V, limit, dx)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_hydrogenlike.py", line 71, in solve
+    T = self.T(limit, self.L, dx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_hydrogenlike.py", line 66, in T
+    D2 = sp.kronsum(D1,D)
+         ^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/cupyx/scipy/sparse/_construct.py", line 579, in kronsum
+    L = kron(eye(B.shape[0], dtype=dtype), A, format=format)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/cupyx/scipy/sparse/_construct.py", line 515, in kron
+    A = _coo.coo_matrix(A)
+        ^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/cupyx/scipy/sparse/_coo.py", line 166, in __init__
+    sparse_data._data_matrix.__init__(self, data)
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/cupyx/scipy/sparse/_data.py", line 19, in __init__
+    def __init__(self, data):
+
+KeyboardInterrupt
+ic| self.index.dtype: dtype('int64')

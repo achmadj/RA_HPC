@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/main.py", line 172, in <module>
+    train_set, train_loader, val_set, val_loader = data_preparation(mode, filename)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/main.py", line 27, in data_preparation
+    with h5py.File(filename, 'r') as hf:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/h5py/_hl/files.py", line 567, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/clusterfs/students/achmadjae/.local/lib/python3.11/site-packages/h5py/_hl/files.py", line 231, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to open file (unable to open file: name = '/clusterfs/students/achmadjae/RA/02_deep3D/data/H_train_40_15000.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
