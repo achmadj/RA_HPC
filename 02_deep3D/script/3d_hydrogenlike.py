@@ -130,7 +130,7 @@ class Solver(object):
                     labels[num,0] = energy
                     num += 1
     #                     print(index, "yes", energy)
-                    print(f"num: {num}", end="\r")
+                    # print(f"num: {num}", end="\r")
                     cxs.append(cx)
                     cys.append(cy)
                     czs.append(cz)
@@ -143,7 +143,7 @@ class Solver(object):
             with h5py.File(self.filename, 'w') as F:
                 F.create_dataset('feature', data=data, compression='gzip')
                 F.create_dataset('target', data=labels, compression='gzip')
-
+        ic("done")
         return data, labels
         # return data, labels
 
