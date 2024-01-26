@@ -112,7 +112,8 @@ def loop_fn(mode, dataset, dataloader, model, criterion, optimizer, scheduler=No
     torch.cuda.empty_cache()
 
   epoch_loss = running_loss / dataset
-  scheduler.step(epoch_loss)
+  if mode == 'val':
+    scheduler.step(epoch_loss)
   return epoch_loss
 
 def train(model, criterion, optimizer, scheduler, NOW, train_set=None, train_loader=None, val_set=None, val_loader=None, max_epoch=300):
@@ -164,8 +165,7 @@ if __name__ == '__main__':
   model = AugNet().to('cuda')
   criterion = nn.L1Loss()
   optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-  scheduler = ReduceLROnPlateau(
-  optimizer, mode='min', factor=0.1, patience=5, min_lr=1e-6, verbose=True)
+  scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, min_lr=1e-6, verbose=True)
 
   if mode == "train":
     filename = f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{NOW}_train_40_15000.h5'

@@ -14,3 +14,12 @@ Traceback (most recent call last):
 KeyboardInterrupt
 ic| mode: 'iw'
 ic| 'done'
+Traceback (most recent call last):
+  File "/clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py", line 268, in <module>
+    mode = sys.argv[1]
+           ~~~~~~~~^^^
+IndexError: list index out of range
+ic| mode: 'iw'
+ic| mode: 'iw'
+ic| mode: 'iw'
+ic| 'done'

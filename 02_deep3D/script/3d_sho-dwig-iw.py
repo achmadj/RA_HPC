@@ -72,9 +72,8 @@ class Solver:
       return A1, A2, A3, cx1, cy1, cz1, cx2, cy2, cz2, cx3, cy3, cz3, kx1, ky1, kz1, kx2, ky2, kz2, kx3, ky3, kz3
     
     elif self.mode == 'iw':
-      # ic("here")
-      E = 0.1 + np.random.random(int(self.N/3))*0.8
-      term1 = np.pi**2 / (2 * E)
+      E = 0.1 + np.random.random(self.N)*0.8
+      term1 = 2*E / np.pi**2
       Lxs = []
       Lys = []
       Lzs = []
@@ -85,10 +84,11 @@ class Solver:
         cx = -8 + (np.random.rand() * 16)
         cy = -8 + (np.random.rand() * 16)
         cz = -8 + (np.random.rand() * 16)
-        Ly = Lz = np.inf
-        while (Ly**2 + Lz**2) > term:
+        Ly = 0.001
+        Lz = 0.001
+        while (Ly**(-2) + Lz**(-2)) > term:
           Ly, Lz = self.RandomL()
-        Lx = np.sqrt(term - Ly**2 - Lz**2)
+        Lx = 1/np.sqrt(term - Ly**(-2) - Lz**(-2))
         Lxs.append(Lx)
         Lys.append(Ly)
         Lzs.append(Lz)
@@ -96,32 +96,7 @@ class Solver:
         cys.append(cy)
         czs.append(cz)
 
-      E = np.repeat(E, 3)
-      Lxs_ = np.array(Lxs + Lys + Lzs)
-      Lys_ = np.array(Lys + Lzs + Lxs)
-      Lzs_ = np.array(Lzs + Lxs + Lys)
-      cx_ = np.array(cxs + cys + czs)
-      cy_ = np.array(cys + czs + cxs)
-      cz_ = np.array(czs + cxs + cys)
-
-      if self.N%3!=0:
-        iw_len = int(self.N/3)*3
-        range_ = self.N - iw_len
-        idx = np.random.randint(0, iw_len, range_)
-        E = np.concatenate((E, E[idx]))
-        Lxs_ = np.concatenate((Lxs_, Lxs_[idx]))
-        Lys_ = np.concatenate((Lys_, Lys_[idx]))
-        Lzs_ = np.concatenate((Lzs_, Lzs_[idx]))
-        cx_ = np.concatenate((cx_, cx_[idx]))
-        cy_ = np.concatenate((cy_, cy_[idx]))
-        cz_ = np.concatenate((cz_, cz_[idx]))
-
-      # delete unreturned variable
-      del Lxs, Lys, Lzs
-      del Ly, Lz, Lx, term1
-      del cxs, cys, czs
-      # ic(len(E), len(Lxs_), len(Lys_), len(Lzs_), len(cx_), len(cy_), len(cz_))
-      return E, Lxs_, Lys_, Lzs_, cx_, cy_, cz_
+      return E, Lxs, Lys, Lzs, cxs, cys, czs
     
   def T(self, h):
     diag = np.ones([self.L])
@@ -229,23 +204,25 @@ class Solver:
     # generate random indeks sebanyak num_augmentations
     if num_augmentations < 1:
       num_augmentations = int(self.N*num_augmentations)
-    idx = np.random.randint(0, self.N, int(num_augmentations))
-    addition_data = np.zeros((num_augmentations, self.L, self.L, self.L))
-    rotations = [90, 180, 270]
-    idx_ax = [0, 1, 2]
-    axes = [(0,1), (1,2), (0,2)]
+    
+    if self.mode == 'iw':
+      idx = np.random.randint(0, self.N, num_augmentations)
+      addition_data = np.zeros((num_augmentations, self.L, self.L, self.L))
+      rotations = [90, 180, 270]
+      idx_ax = [0, 1, 2]
+      axes = [(0,1), (1,2), (0,2)]
 
-    for index, i in enumerate(idx):
-      # rotate
-      rot = np.random.choice(rotations)
-      idx_axis = np.random.choice(idx_ax)
-      addition_data[index] = rotate(imgs[i], angle=rot, axes=axes[idx_axis], reshape=False)
+      for index, i in enumerate(idx):
+        # rotate
+        rot = np.random.choice(rotations)
+        idx_axis = np.random.choice(idx_ax)
+        addition_data[index] = rotate(imgs[i], angle=rot, axes=axes[idx_axis], reshape=False)
 
-    energies = np.concatenate((energies, energies[idx]))
-    imgs = np.concatenate((imgs, addition_data))
+      energies = np.concatenate((energies, energies[idx]))
+      imgs = np.concatenate((imgs, addition_data))
 
-    # del unused variable
-    del addition_data, rotations, axes, idx
+      # del unused variable
+      del addition_data, rotations, axes, idx
 
     with h5py.File(filename, 'w') as hf:
       hf.create_dataset('feature', data=imgs)
