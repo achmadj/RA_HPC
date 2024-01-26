@@ -1,2 +1,0 @@
-ic| feature.shape: (5000, 40, 40, 40), target.shape: (5000,)
-ic| np.mean(c): 0.04634782

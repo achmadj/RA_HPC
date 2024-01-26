@@ -164,7 +164,7 @@ class Solver:
     energies = np.zeros((self.N, 3))
     imgs = np.zeros((self.N, self.L, self.L, self.L))
     if self.mode=='iw':
-      energies = np.zeros((self.N, 3))
+      energies = np.zeros((self.N, 1))
       
     for idx in range(self.N):
       if self.mode=='iw':
@@ -176,19 +176,13 @@ class Solver:
       else:
         V, img = self.V_sho(mesh, param[idx]) if self.mode == 'sho' else self.V_dwig(mesh, param[idx])
         H = T + V
-        E, psi = linalg.eigsh(H, k=2, which='SA', return_eigenvectors=True)
+        E = linalg.eigsh(H, k=1, which='SA', return_eigenvectors=False)
         E0 = E[0]
-        E1 = E[1]
-        wf = psi[:, 0]
-        kinetic = wf.dot(T.dot(wf.T))
         energies[idx, 0] = np.real(E0.get())
-        energies[idx, 1] = np.real(E1.get())
-        energies[idx, 2] = np.real(kinetic.get())
-
         imgs[idx] = img
-        del H, E, psi, E0, E1, wf, kinetic
+        del H, E, E0
     # remove unused variable
-    del mesh, h, T, param, V, img, 
+    del mesh, h, T, param, V, img,
     return energies, imgs
   
   def create_train_data(self, filename, num_augmentations=0.2):
@@ -205,7 +199,7 @@ class Solver:
     if num_augmentations < 1:
       num_augmentations = int(self.N*num_augmentations)
     
-    if self.mode == 'iw':
+    if self.mode != 'iw':
       idx = np.random.randint(0, self.N, num_augmentations)
       addition_data = np.zeros((num_augmentations, self.L, self.L, self.L))
       rotations = [90, 180, 270]
@@ -263,12 +257,12 @@ def random_split(X, y, val_split=0.2):
 if __name__ == "__main__":
   L = 40
   limit = 20
-  N_train = 15000
+  N_train = 20000
   N_test = 5000
   mode = sys.argv[1]
   ic(mode)
-  train_filename = f'{mode}_train_{L}_{N_train}.h5'
-  test_filename = f'{mode}_test_{L}_{N_test}.h5'
+  train_filename = f'{mode}_train_{L}_15000.h5'
+  test_filename = f'{mode}_test_{L}_5000.h5'
   S = Solver(L, limit, N_train, mode)
   S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
   S.create_test_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{test_filename}', N_test)
