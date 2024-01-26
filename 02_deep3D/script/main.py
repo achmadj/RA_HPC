@@ -12,9 +12,9 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import datetime
 import time
 from icecream import ic
-
-# get date only
 import sys
+
+plt.rcParams['text.usetex'] = True
 
 def random_split(X, y, train_split):
   N = X.shape[0]
@@ -153,7 +153,7 @@ def test(model, NOW, val_loader=None):
   MAX = np.max([y_true, y_pred])
   # plt.xlim(MIN, MAX)
   # plt.ylim(MIN, MAX)
-  plt.savefig(f'/clusterfs/students/achmadjae/RA/02_deep3D/fig/plot_{NOW}.svg', bbox_inches='tight')
+  plt.savefig(f'/clusterfs/students/achmadjae/RA/02_deep3D/fig/plot_{NOW}.pdf', bbox_inches='tight')
   plt.tight_layout()
   plt.show()
 

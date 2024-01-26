@@ -1,2 +1,5 @@
 ic| self.index.dtype: dtype('int64')
 ic| self.index.dtype: dtype('int64')
+ic| 'done'
+ic| self.index.dtype: dtype('int64')
+ic| 'done'
