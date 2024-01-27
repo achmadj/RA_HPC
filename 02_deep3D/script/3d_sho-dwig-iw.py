@@ -262,6 +262,6 @@ if __name__ == "__main__":
   train_filename = f'{mode}_train_{L}_15000.h5'
   test_filename = f'{mode}_test_{L}_5000.h5'
   S = Solver(L, limit, N_train, mode)
-  # S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
+  S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
   S.create_test_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{test_filename}', N_test)
   ic('done')
