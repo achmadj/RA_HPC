@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the first command in the background
-python /clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py iw > /clusterfs/students/achmadjae/RA/02_deep3D/script/data_log/iw.log &
+nohup python /clusterfs/students/achmadjae/RA/02_deep3D/script/3d_sho-dwig-iw.py iw > /clusterfs/students/achmadjae/RA/02_deep3D/script/data_log/iw.log &
 # Capture its process ID
 PID1=$!
 
@@ -9,7 +9,7 @@ PID1=$!
 wait $PID1
 
 # Run the second command in the background
-python /clusterfs/students/achmadjae/RA/02_deep3D/script/main.py iw train > /clusterfs/students/achmadjae/RA/02_deep3D/script/train_log/iw.log &
+nohup python /clusterfs/students/achmadjae/RA/02_deep3D/script/main.py iw train > /clusterfs/students/achmadjae/RA/02_deep3D/script/train_log/iw.log &
 # Capture its process ID
 PID2=$!
 
@@ -17,7 +17,7 @@ PID2=$!
 wait $PID2
 
 # Run the third command in the background
-python /clusterfs/students/achmadjae/RA/02_deep3D/script/main.py iw test > /clusterfs/students/achmadjae/RA/02_deep3D/script/test_log/iw_test.log &
+nohup python /clusterfs/students/achmadjae/RA/02_deep3D/script/main.py iw test > /clusterfs/students/achmadjae/RA/02_deep3D/script/test_log/iw_test.log &
 # Capture its process ID
 PID3=$!
 
