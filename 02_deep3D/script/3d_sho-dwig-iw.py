@@ -161,10 +161,8 @@ class Solver:
     T = self.T(h)
     (param) = self.getRandom()
     param = np.array(param).T
-    energies = np.zeros((self.N, 3))
+    energies = np.zeros((self.N, 1))
     imgs = np.zeros((self.N, self.L, self.L, self.L))
-    if self.mode=='iw':
-      energies = np.zeros((self.N, 1))
       
     for idx in range(self.N):
       if self.mode=='iw':
@@ -264,6 +262,6 @@ if __name__ == "__main__":
   train_filename = f'{mode}_train_{L}_15000.h5'
   test_filename = f'{mode}_test_{L}_5000.h5'
   S = Solver(L, limit, N_train, mode)
-  S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
+  # S.create_train_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{train_filename}', 5000)
   S.create_test_data(f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{test_filename}', N_test)
   ic('done')

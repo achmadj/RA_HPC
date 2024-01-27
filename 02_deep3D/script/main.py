@@ -64,10 +64,10 @@ class AugNet(nn.Module):
     self.reduce3 = nn.Conv3d(16, 8, 4, 2, 1)
     self.nonreduce3_1 = nn.Conv3d(8, 8, 3, 1, 1)
     self.nonreduce3_2 = nn.Conv3d(8, 8, 3, 1, 1)
-    self.nonreduce3_3 = nn.Conv3d(8, 8, 3, 1, 1)
+    self.nonreduce3_3 = nn.Conv3d(8, 16, 3, 1, 1)
     self.flatten = nn.Flatten()
     self.relu = nn.ReLU()
-    self.fc = nn.Linear(1000, 1)
+    self.fc = nn.Linear(2000, 1)
 
   def forward(self, x):
     x = self.relu(self.reduce1(x))
@@ -164,8 +164,8 @@ if __name__ == '__main__':
   # MCOC
   model = AugNet().to('cuda')
   criterion = nn.L1Loss()
-  optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-  scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, min_lr=1e-7, verbose=True)
+  optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
+  scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, min_lr=1e-7, verbose=True)
 
   if mode == "train":
     filename = f'/clusterfs/students/achmadjae/RA/02_deep3D/data/{NOW}_train_40_15000.h5'
