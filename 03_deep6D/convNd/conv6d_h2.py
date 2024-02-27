@@ -24,6 +24,7 @@ y = torch.tensor(label.reshape(N, 1), dtype=torch.float32)
 
 dataset = torch.utils.data.TensorDataset(x, y)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=23)
+val_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=23)
 
 # Create Model with pytorch lightning module
 class NN(pl.LightningModule):
@@ -70,8 +71,8 @@ class NN(pl.LightningModule):
 
 # Train model
 model = NN().to(device)
-trainer = pl.Trainer(accelerator='gpu', max_epochs=300, log_every_n_steps=3, enable_progress_bar=False)
-trainer.fit(model, train_dataloaders=dataloader, val_dataloaders=dataloader)
+trainer = pl.Trainer(accelerator='gpu', max_epochs=10, log_every_n_steps=3, enable_progress_bar=True)
+trainer.fit(model, train_dataloaders=dataloader, val_dataloaders=val_dataloader)
 model.save('conv6d_h2.pt')
 
 y_ = model(x.to(device))
