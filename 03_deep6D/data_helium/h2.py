@@ -17,6 +17,7 @@ filename = "h2.h5"
 potentials = np.zeros([len(X), g, g, g, g, g, g, 1])
 labels = np.zeros([len(X), 1])
 kinetics = np.zeros([len(X), 1])
+bond_length = np.zeros([len(X), 1])
 
 for idx, b in tqdm(enumerate(X)):
   # location of nuclei
@@ -68,6 +69,7 @@ for idx, b in tqdm(enumerate(X)):
   potentials[idx] = v.reshape([g, g, g, g, g, g, 1])
   labels[idx] = E[0]
   kinetics[idx] = wf.T @ T @ wf
+  bond_length[idx] = b
 
 import h5py
 
@@ -75,3 +77,4 @@ with h5py.File(filename, 'w') as f:
   f.create_dataset('potentials', data=potentials.get())
   f.create_dataset('labels', data=labels.get())
   f.create_dataset('kinetics', data=kinetics.get())
+  f.create_dataset('bond_length', data=bond_length.get())

@@ -16,6 +16,8 @@ with h5py.File('/clusterfs/students/achmadjae/RA/03_deep6D/data_helium/h2.h5', '
     data = f['potentials'][:]
     label = f['labels'][:]
 
+ic(data.shape, label.shape)
+
 L = data.shape[1]
 N = data.shape[0]
 batch_size = 25
@@ -71,24 +73,34 @@ class NN(pl.LightningModule):
 
 # Train model
 model = NN().to(device)
-trainer = pl.Trainer(accelerator='gpu', max_epochs=10, log_every_n_steps=3, enable_progress_bar=True)
+trainer = pl.Trainer(accelerator='gpu', max_epochs=100, log_every_n_steps=3, enable_progress_bar=True)
 trainer.fit(model, train_dataloaders=dataloader, val_dataloaders=val_dataloader)
-model.save('conv6d_h2.pt')
+# model.save('conv6d_h2.pt')
+# model  = NN.load_from_checkpoint('/clusterfs/students/achmadjae/RA/03_deep6D/convNd/lightning_logs/version_0/checkpoints/epoch=9-step=180.ckpt')
+# checkpoint = torch.load('/clusterfs/students/achmadjae/RA/03_deep6D/convNd/lightning_logs/version_0/checkpoints/epoch=9-step=180.ckpt')
+# weight = checkpoint['state_dict']
+# model = NN().to(device)
+# model.load_state_dict(weight)
 
-y_ = model(x.to(device))
-targets = y.to(device)
 
-def plot(x, y):
-    X = x.cpu().numpy()
-    Y = y.cpu().numpy()
-    c = np.abs(X - Y)
-    plt.scatter(X, Y, s=5, c=c, cmap='inferno')
-    maks = np.max([np.max(X), np.max(Y)])
-    plt.xlim(np.min([np.min(X), np.min(Y)]), np.max([np.max(X), np.max(Y)]))
-    plt.ylim(np.min([np.min(X), np.min(Y)]), np.max([np.max(X), np.max(Y)]))
-    plt.xlabel('predicted')
-    plt.ylabel('actual')
-    plt.savefig('pred_h2.png')
-    plt.show()
+# # predict with dataloader
+# model.eval()
+# x, y = next(iter(dataloader))
+# X_ = x.to(device)
+# y_ = model(X_).cpu()
+# targets = y
 
-plot(y_, targets)
+# def plot(x, y):
+#     X = x.detach().numpy()
+#     Y = y.cpu().numpy()
+#     c = np.abs(X - Y)
+#     plt.scatter(X, Y, s=5, c=c, cmap='inferno')
+#     maks = np.max([np.max(X), np.max(Y)])
+#     plt.xlim(np.min([np.min(X), np.min(Y)]), np.max([np.max(X), np.max(Y)]))
+#     plt.ylim(np.min([np.min(X), np.min(Y)]), np.max([np.max(X), np.max(Y)]))
+#     plt.xlabel('predicted')
+#     plt.ylabel('actual')
+#     plt.savefig('pred_h2.png')
+#     plt.show()
+
+# plot(y_, targets)
