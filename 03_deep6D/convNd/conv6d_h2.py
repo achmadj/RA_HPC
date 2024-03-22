@@ -72,9 +72,10 @@ class NN(pl.LightningModule):
 
 
 # Train model
-model = NN().to(device)
-trainer = pl.Trainer(accelerator='gpu', max_epochs=100, log_every_n_steps=3, enable_progress_bar=True)
-trainer.fit(model, train_dataloaders=dataloader, val_dataloaders=val_dataloader)
+def run_training():
+    model = NN().to(device)
+    trainer = pl.Trainer(accelerator='gpu', max_epochs=100, log_every_n_steps=3, enable_progress_bar=True)
+    trainer.fit(model, train_dataloaders=dataloader, val_dataloaders=val_dataloader)
 # model.save('conv6d_h2.pt')
 # model  = NN.load_from_checkpoint('/clusterfs/students/achmadjae/RA/03_deep6D/convNd/lightning_logs/version_0/checkpoints/epoch=9-step=180.ckpt')
 # checkpoint = torch.load('/clusterfs/students/achmadjae/RA/03_deep6D/convNd/lightning_logs/version_0/checkpoints/epoch=9-step=180.ckpt')
