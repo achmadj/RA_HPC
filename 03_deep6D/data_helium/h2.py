@@ -1,19 +1,22 @@
-import cupyx.scipy.sparse as sp
-import cupyx.scipy.sparse.linalg as linalg
-import cupy as np
+# import cupyx.scipy.sparse as sp
+# import cupyx.scipy.sparse.linalg as linalg
+# import cupy as np
+import scipy.sparse as sp
+import scipy.sparse.linalg as linalg
+import numpy as np
 # import numpy as np
 from tqdm.auto import tqdm
 from icecream import ic
+import matplotlib.pyplot as plt
 
 # grid
 X = np.arange(0.5, 5, 0.01)
-g = 8
-h1 = 0.9
+g = 16
+h1 = 0.7
 g3 = g ** 6
 r0 = h1 * (g - 1) / 2
 
-
-filename = "h2.h5"
+filename = "hehe.h5"
 potentials = np.zeros([len(X), g, g, g, g, g, g, 1])
 labels = np.zeros([len(X), 1])
 kinetics = np.zeros([len(X), 1])
@@ -48,17 +51,17 @@ for idx, b in tqdm(enumerate(X)):
   D1 = sp.kronsum(sp.kronsum(sp.kronsum(sp.kronsum(sp.kronsum(D,D), D), D), D), D)
   T = -0.5 * D1
   # Potential energy
-  va1 = -1 / np.sqrt((xa - X1) ** 2 + (ya - Y1) ** 2 + (za - Z1) ** 2)
+  va1 = -2 / np.sqrt((xa - X1) ** 2 + (ya - Y1) ** 2 + (za - Z1) ** 2)
   va1[np.isinf(va1)] = 0
-  va2 = -1 / np.sqrt((xa - X2) ** 2 + (ya - Y2) ** 2 + (za - Z2) ** 2)
+  va2 = -2 / np.sqrt((xa - X2) ** 2 + (ya - Y2) ** 2 + (za - Z2) ** 2)
   va2[np.isinf(va2)] = 0
-  vb1 = -1 / np.sqrt((xb - X1) ** 2 + (yb - Y1) ** 2 + (zb - Z1) ** 2)
+  vb1 = -2 / np.sqrt((xb - X1) ** 2 + (yb - Y1) ** 2 + (zb - Z1) ** 2)
   vb1[np.isinf(vb1)] = 0
-  vb2 = -1 / np.sqrt((xb - X2) ** 2 + (yb - Y2) ** 2 + (zb - Z2) ** 2)
+  vb2 = -2 / np.sqrt((xb - X2) ** 2 + (yb - Y2) ** 2 + (zb - Z2) ** 2)
   vb2[np.isinf(vb2)] = 0
   vx = 1 / r12
   vx[np.isinf(vx)] = 0
-  vn = 1 / np.sqrt((xa - xb) ** 2 + (ya - yb) ** 2 + (za - zb) ** 2)
+  vn = 4 / np.sqrt((xa - xb) ** 2 + (ya - yb) ** 2 + (za - zb) ** 2)
   v = va1 + va2 + vb1 + vb2 + vx + vn
   v[np.isinf(v)] = 0
   U = sp.diags(v, 0, (g3, g3))
@@ -74,7 +77,7 @@ for idx, b in tqdm(enumerate(X)):
 import h5py
 
 with h5py.File(filename, 'w') as f:
-  f.create_dataset('potentials', data=potentials.get())
-  f.create_dataset('labels', data=labels.get())
-  f.create_dataset('kinetics', data=kinetics.get())
-  f.create_dataset('bond_length', data=bond_length.get())
+  f.create_dataset('potentials', data=potentials)
+  f.create_dataset('labels', data=labels)
+  f.create_dataset('kinetics', data=kinetics)
+  f.create_dataset('bond_length', data=bond_length)
